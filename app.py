@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash
 import bcrypt
 
 app = Flask(__name__)
-app.secret_key = 'super-secret-key-change-in-production'  # Needed for flash messages
+app.secret_key = 'super-secret-key-change-in-production'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -17,8 +17,7 @@ def index():
             if not password:
                 flash("Password cannot be empty!", "danger")
             else:
-                # Generate hash
-                salt = bcrypt.gensalt(rounds=12)  # You can change rounds (cost)
+                salt = bcrypt.gensalt(rounds=12)
                 generated_hash = bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
                 flash("Hash generated successfully!", "success")
 
@@ -34,14 +33,13 @@ def index():
                         result = "✅ Password match with hash"
                     else:
                         result = "❌ Password does NOT match with hash"
-                except Exception as e:
-                    flash(f"Invalid hash format: {str(e)}", "danger")
+                except Exception:
+                    flash("Invalid hash format!", "danger")
 
     return render_template('index.html', 
                          result=result, 
                          generated_hash=generated_hash)
 
-
 if __name__ == '__main__':
-    print("🚀 Starting Bcrypt Tool...")
+    print("🚀 Starting Bcrypt Tool (Dark Mode)...")
     app.run(debug=True, port=5000)
